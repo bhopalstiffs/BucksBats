@@ -1,0 +1,108 @@
+---
+title: "Season, temperature, humidity, and lunar phase influence bat activity in the Sierra Nevada"
+author:
+  - name: Alan T. Hitch
+    corresponding: true
+    email: bhitch@stillwatersci.com
+    affiliation:
+      - name: Stillwater Sciences
+        city: Sacramento
+        region: CA
+        postal-code: xxxxx
+        country: USA
+      - name: School of Data Analytics and Computational Sciences, Harrisburg University of Science and Technology
+        city: Harrisburg
+        region: PA
+        postal-code: 19101
+        country: USA
+      - name: Museum of Wildlife and Fish Biology, Department of Wildlife, Fish and Conservation Biology, University of California, Davis
+        city: Davis
+        region: CA
+        postal-code: 95616
+        country: USA
+
+  - name: Lauren Dusek
+    affiliation:
+      - name: Stillwater Sciences
+        city: Arcata
+        region: CA
+        postal-code: 95521
+        country: USA
+
+  - name: Christine Champe
+    affiliation:
+      - name: Stillwater Sciences
+        city: Arcata
+        region: CA
+        postal-code: 95521
+        country: USA
+
+format:
+  docx:
+    toc: false
+    number-sections: false
+    fig-cap-location: bottom
+    tbl-cap-location: top
+
+execute:
+  echo: false
+  warning: false
+  message: false
+
+lang: en-US
+
+bibliography:
+  - references/bats.bib
+  - references/packages.bib
+
+csl: references/functional-ecology.csl
+# reference-doc: manuscript-reference.docx
+---
+
+# Title options for co-author review {.unnumbered}
+
+**Option 1 — Current working title**
+
+Directed acyclic graph reveals frequency-dependent humidity sensitivity and thermal niche differentiation in a Sierra Nevada bat community
+
+**Option 2**
+
+Atmospheric call attenuation, thermal niches, and migratory phenology jointly shape bat activity: a causal-inference analysis of a Sierra Nevada community
+
+**Option 3**
+
+Seasonal occupancy patterns reveal migratory structure and species-level heterogeneity in a temperate bird community
+
+**Option 4**
+
+Atmospheric attenuation predicts frequency-dependent humidity sensitivity in a temperate bat community: a causal-inference analysis[
+
+**Option 5**
+
+Untangling seasonal, weather, and lunar drivers of bat activity in the Sierra Nevada using causal models 
+
+
+---
+
+<!-- {{< include sections/abstract.qmd >}} -->
+
+<!-- {{< include sections/introduction.qmd >}} -->
+
+<!-- {{< include sections/methods.qmd >}} -->
+
+<!-- {{< include sections/results.qmd >}} -->
+
+<!-- {{< include sections/discussion.qmd >}} -->
+
+<!-- {{< include sections/acknowledgements.qmd >}} -->
+
+<!-- {{< include sections/data-availability.qmd >}} -->
+
+# References {.unnumbered}
+
+::: {#refs}
+:::
+
+\newpage
+
+{{< include sections/supplementary-material.qmd >}}

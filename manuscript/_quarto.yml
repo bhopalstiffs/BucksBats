@@ -1,0 +1,14 @@
+project:
+  type: default
+  output-dir: _output
+  execute-dir: project
+
+format:
+  docx:
+    toc: false
+    number-sections: false
+    fig-cap-location: bottom
+    tbl-cap-location: top
+
+execute:
+  freeze: auto

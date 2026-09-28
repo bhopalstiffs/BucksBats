@@ -1,0 +1,18 @@
+# Abstract
+
+Bat activity reflects seasonal phenology and nightly environmental conditions that frequently covary, making their contributions difficult to distinguish from marginal associations alone. We investigated these drivers at eight sites spanning 581–1,846 m elevation in the northern Sierra Nevada of California from April to October 2015. After excluding site-nights without usable acoustic recordings, the analytical dataset contained 1,056 site-nights and 17 bat species. We used a directed acyclic graph to formalize hypothesized relationships among day of year, temperature, relative humidity, lunar phase, and bat activity, and fitted Bayesian negative-binomial generalized additive models that allowed seasonal phenology to vary among sites. We compared the total seasonal pattern with seasonal structure remaining after conditioning on nightly environmental conditions and stratified analyses into low- (\<25 kHz), mid- (25–40 kHz), and high-frequency (\>40 kHz) echolocation groups to test predictions from acoustic-attenuation theory. The final aggregate models showed that representing site-specific seasonal phenology substantially reduced persistent residual temporal dependence, while temperature and relative humidity remained important conditional correlates of nightly activity. **\[UPDATE AFTER FINAL FREQUENCY-GROUP MODELS: summarize the final humidity response shapes and temperature responses only if they persist under the accepted frequency-group models.\]** Lunar phase produced a comparatively smaller conditional response than temperature and humidity. Together, these analyses show how explicit representation of causal structure, nonlinear environmental responses, and local seasonal phenology can separate environmental signals that are otherwise confounded in community-level acoustic data.
+
+```{=html}
+<!--
+ABSTRACT UPDATE CHECKLIST
+
+1. Confirm whether 232,336 classified calls remains the correct raw-call total
+   after the detector-effort correction. It can be restored if verified.
+2. Replace the bracketed frequency-group sentence after production fits.
+3. Revisit the seasonal sentence after regenerating the total-versus-conditional
+   seasonal figure from the final models.
+4. Add quantitative posterior contrasts if Functional Ecology's preferred
+   abstract style/word limit permits.
+5. Do NOT restore "1,231 site-nights"; the corrected analytical dataset is 1,056.
+-->
+```
