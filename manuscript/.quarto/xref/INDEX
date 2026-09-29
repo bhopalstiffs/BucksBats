@@ -7,5 +7,11 @@
   },
   "sections/results.qmd": {
     "results.docx": "d8080a48"
+  },
+  "sections/supplementary-material.qmd": {
+    "supplementary-material.docx": "6a1ec714"
+  },
+  "manuscript.qmd": {
+    "manuscript.docx": "fbc0e7fe"
   }
 }

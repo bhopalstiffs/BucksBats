@@ -21,7 +21,8 @@
 # -----------------------------------------------------------------------------
 
 activity_ylab <- paste0(
-  "Expected number of 5-min intervals night\u207B\u00B9\n"
+  "Expected number of 5-min intervals per night\n",
+  "with bat activity"
 )
 
 bat_theme <- function() {
@@ -777,3 +778,249 @@ make_final_aggregate_figures <- function(env_model, data, fig_dir,
 # structure for each group. This prevents the plotting pipeline from silently
 # treating unvalidated models as final results.
 # =============================================================================
+
+
+# =============================================================================
+# Supplementary figures
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# Figure S1: Site-specific seasonal phenology
+# -----------------------------------------------------------------------------
+
+make_figure_s1 <- function(post_sites, post_average, fig_dir = NULL,
+                           filename = "Figure_S1_site_seasonality.PNG") {
+
+  p <- plot_site_season_posterior(
+    post_sites = post_sites,
+    post_average = post_average,
+    title = NULL
+  )
+
+  if (!is.null(fig_dir)) {
+    ggsave(
+      file.path(fig_dir, filename),
+      p, width = 11, height = 6.5, units = "in", dpi = 300, bg = "white"
+    )
+  }
+
+  invisible(p)
+}
+
+
+# -----------------------------------------------------------------------------
+# Calendar-aware residual correlation
+# -----------------------------------------------------------------------------
+
+calendar_acf <- function(model, data, max_lag = 14) {
+
+  r <- residuals(model, summary = TRUE)[, "Estimate"]
+
+  dat <- data |>
+    transmute(
+      Site = as.character(Site),
+      date = as.Date(NiteDayDate),
+      resid = r
+    )
+
+  map_dfr(seq_len(max_lag), function(k) {
+
+    paired <- dat |>
+      transmute(
+        Site,
+        date2 = date + k,
+        resid_lag = resid
+      ) |>
+      inner_join(
+        dat |>
+          transmute(Site, date2 = date, resid_now = resid),
+        by = c("Site", "date2")
+      )
+
+    tibble(
+      lag = k,
+      n_pairs = nrow(paired),
+      correlation = if (nrow(paired) > 2) {
+        cor(paired$resid_lag, paired$resid_now, use = "complete.obs")
+      } else {
+        NA_real_
+      }
+    )
+  })
+}
+
+
+# -----------------------------------------------------------------------------
+# Figure S2: Calendar-aware residual temporal dependence
+# -----------------------------------------------------------------------------
+
+make_figure_s2 <- function(models, data_list, fig_dir = NULL,
+                           filename = "Figure_S2_residual_acf.PNG",
+                           max_lag = 14) {
+
+  acf_data <- imap_dfr(
+    models,
+    ~ calendar_acf(.x, data_list[[.y]], max_lag = max_lag) |>
+      mutate(Model = .y)
+  ) |>
+    mutate(
+      Model = recode(
+        Model,
+        Aggregate = "Aggregate",
+        Low = "Low-frequency group",
+        Mid = "Mid-frequency group",
+        High = "High-frequency group"
+      )
+    )
+
+  p <- ggplot(acf_data, aes(lag, correlation)) +
+    geom_hline(yintercept = 0, linetype = 2, linewidth = 0.4) +
+    geom_line(linewidth = 0.7) +
+    geom_point(size = 1.6) +
+    facet_wrap(~ Model, ncol = 2) +
+    scale_x_continuous(breaks = seq(2, max_lag, by = 2)) +
+    labs(
+      x = "Calendar lag (days)",
+      y = "Residual correlation"
+    ) +
+    theme_minimal(base_size = 11)
+
+  if (!is.null(fig_dir)) {
+    ggsave(
+      file.path(fig_dir, filename),
+      p, width = 10, height = 7.5, units = "in", dpi = 300, bg = "white"
+    )
+  }
+
+  invisible(p)
+}
+
+
+# -----------------------------------------------------------------------------
+# Figure S3: Aggregate posterior predictive checks
+# -----------------------------------------------------------------------------
+
+make_figure_s3 <- function(model, fig_dir = NULL,
+                           filename = "Figure_S3_aggregate_ppc.PNG",
+                           ndraws = 100) {
+
+  make_final_ppc_figure(
+    model = model,
+    fig_dir = fig_dir,
+    filename = filename,
+    ndraws = ndraws
+  )
+}
+
+
+# -----------------------------------------------------------------------------
+# Figure S4: Site-specific posterior predictive checks
+# -----------------------------------------------------------------------------
+
+make_figure_s4 <- function(model, data, fig_dir = NULL,
+                           filename = "Figure_S4_site_ppc.PNG",
+                           ndraws = 500) {
+
+  yrep <- posterior_predict(model, ndraws = ndraws)
+
+  site_levels <- unique(as.character(data$Site))
+
+  site_ppc <- map_dfr(site_levels, function(s) {
+
+    idx <- which(as.character(data$Site) == s)
+    obs <- data$n[idx]
+
+    rep_mean <- rowMeans(yrep[, idx, drop = FALSE])
+    rep_sd <- apply(yrep[, idx, drop = FALSE], 1, sd)
+
+    bind_rows(
+      tibble(
+        Site = s,
+        Statistic = "Mean",
+        Observed = mean(obs),
+        Median = median(rep_mean),
+        Lower = quantile(rep_mean, 0.055),
+        Upper = quantile(rep_mean, 0.945)
+      ),
+      tibble(
+        Site = s,
+        Statistic = "Standard deviation",
+        Observed = sd(obs),
+        Median = median(rep_sd),
+        Lower = quantile(rep_sd, 0.055),
+        Upper = quantile(rep_sd, 0.945)
+      )
+    )
+  })
+
+  p <- ggplot(site_ppc, aes(x = Site)) +
+    geom_linerange(
+      aes(ymin = Lower, ymax = Upper),
+      linewidth = 0.7
+    ) +
+    geom_point(aes(y = Median), shape = 21, fill = "white", size = 2.5) +
+    geom_point(aes(y = Observed), shape = 4, size = 2.8, stroke = 0.9) +
+    facet_wrap(~ Statistic, scales = "free_y", ncol = 1) +
+    labs(
+      x = NULL,
+      y = "Intervals per night"
+    ) +
+    theme_minimal(base_size = 11)
+
+  if (!is.null(fig_dir)) {
+    ggsave(
+      file.path(fig_dir, filename),
+      p, width = 10, height = 7.5, units = "in", dpi = 300, bg = "white"
+    )
+  }
+
+  invisible(p)
+}
+
+
+# -----------------------------------------------------------------------------
+# Figure S5: Frequency-group posterior predictive checks
+# -----------------------------------------------------------------------------
+
+make_figure_s5 <- function(models, fig_dir = NULL,
+                           filename = "Figure_S5_frequency_ppc.PNG",
+                           ndraws = 100) {
+
+  group_titles <- c(
+    Low = "Low-frequency group",
+    Mid = "Mid-frequency group",
+    High = "High-frequency group"
+  )
+
+  make_row <- function(model, title) {
+
+    p1 <- pp_check(model, ndraws = ndraws, type = "dens_overlay") +
+      labs(title = title, subtitle = "Distribution")
+
+    p2 <- pp_check(model, ndraws = ndraws, type = "stat", stat = "sd") +
+      labs(title = NULL, subtitle = "Standard deviation")
+
+    prop_zero <- function(y) mean(y == 0)
+    p3 <- pp_check(model, ndraws = ndraws, type = "stat", stat = prop_zero) +
+      labs(title = NULL, subtitle = "Proportion zero")
+
+    p1 + p2 + p3
+  }
+
+  p <- (
+    make_row(models$Low, group_titles["Low"]) /
+    make_row(models$Mid, group_titles["Mid"]) /
+    make_row(models$High, group_titles["High"])
+  ) +
+    plot_annotation(tag_levels = "a") &
+    theme_minimal(base_size = 10)
+
+  if (!is.null(fig_dir)) {
+    ggsave(
+      file.path(fig_dir, filename),
+      p, width = 14, height = 12, units = "in", dpi = 300, bg = "white"
+    )
+  }
+
+  invisible(p)
+}

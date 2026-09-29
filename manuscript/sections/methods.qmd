@@ -1,7 +1,7 @@
 # Methods
 
 ```{r}
-#| label: results-setup
+#| label: methods-setup
 #| include: false
 
 library(knitr)

@@ -53,7 +53,7 @@ lang: en-US
 
 bibliography:
   - references/bats.bib
-  - references/packages.bib
+  # - references/packages.bib
 
 csl: references/functional-ecology.csl
 # reference-doc: manuscript-reference.docx
@@ -86,15 +86,15 @@ Untangling seasonal, weather, and lunar drivers of bat activity in the Sierra Ne
 
 <!-- {{< include sections/abstract.qmd >}} -->
 
-<!-- {{< include sections/introduction.qmd >}} -->
+{{< include sections/introduction.qmd >}}
 
-<!-- {{< include sections/methods.qmd >}} -->
+{{< include sections/methods.qmd >}}
 
-<!-- {{< include sections/results.qmd >}} -->
+{{< include sections/results.qmd >}}
 
 <!-- {{< include sections/discussion.qmd >}} -->
 
-<!-- {{< include sections/acknowledgements.qmd >}} -->
+{{< include sections/acknowledgements.qmd >}}
 
 <!-- {{< include sections/data-availability.qmd >}} -->
 

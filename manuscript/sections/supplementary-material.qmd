@@ -1,6 +1,6 @@
 # Supplementary material {.unnumbered}
 
-This supplementary material contains model definitions, sampling and species summaries, model diagnostics, posterior predictive checks, residual temporal diagnostics, and sensitivity analyses supporting the main-text analysis of bat activity in the northern Sierra Nevada. Intermediate model-development objects that do not contribute directly to interpretation are retained in the analysis repository rather than reproduced here.
+This supplementary material provides model specifications, sampling and species summaries, model diagnostics, posterior predictive checks, and residual temporal diagnostics supporting the main-text analysis of bat activity in the northern Sierra Nevada. Intermediate model-development objects that do not contribute directly to interpretation are retained in the analysis repository rather than reproduced here.
 
 ```{r}
 #| label: setup-supplement
@@ -9,186 +9,136 @@ This supplementary material contains model definitions, sampling and species sum
 library(tidyverse)
 library(knitr)
 
-table_dir  <- "tables"
-figure_dir <- "figures"
-derived_dir <- "derived"
+table_dir  <- file.path("..", "derived", "tables")
+figure_dir <- normalizePath(
+  "../figs/supplementary",
+  winslash = "/",
+  mustWork = TRUE
+)
 
-# If this file lives in manuscript/, change these to ../tables, ../figures, etc.
+require_file <- function(path) {
+  if (!file.exists(path)) {
+    stop(
+      "Required supplementary output not found: ",
+      path,
+      call. = FALSE
+    )
+  }
+  invisible(path)
+}
+
+supp_table <- function(name) {
+  path <- file.path(
+    table_dir,
+    paste0(name, ".rds")
+  )
+
+  require_file(path)
+  readRDS(path)
+}
+
+include_supp_figure <- function(filename) {
+
+  path <- file.path(
+    figure_dir,
+    filename
+  )
+
+  require_file(path)
+
+  knitr::include_graphics(
+    path,
+    rel_path = FALSE
+  )
+}
+
 ```
 
 # Supplementary tables
 
-## Table S1. Model definitions and estimands
-
-Table S1 documents the final model set, response distribution, seasonal structure, environmental covariates, and interpretation of each model.
+## Table S1. Final model specifications
 
 ```{r}
 #| label: tbl-s1-model-definitions
-#| tbl-cap: "Final Bayesian generalized additive models used to estimate aggregate and frequency-group bat activity. The table distinguishes the total seasonal estimand from conditional environmental associations."
+#| tbl-cap: "Final Bayesian generalized additive models used to estimate aggregate and frequency-group bat activity. All models used a negative-binomial response distribution with a log link and site-specific seasonal phenology represented by penalized factor-smooth interactions where applicable."
 #| echo: false
 #| warning: false
 #| message: false
 
-model_def_file <- file.path(table_dir, "model_definitions.csv")
+table_s1 <- supp_table("table_s1")
 
-if (file.exists(model_def_file)) {
-  model_definitions <- readr::read_csv(
-    model_def_file,
-    show_col_types = FALSE
-  )
-
-  knitr::kable(model_definitions)
-} else {
-  cat("PLACEHOLDER: generate tables/model_definitions.csv from the final model lookup.")
-}
-```
-
-```{=html}
-<!--
-Suggested columns:
-Dataset
-Model
-Response
-Family
-Formula / seasonal structure
-Environmental covariates
-Primary estimand
-
-At minimum include:
-- Aggregate season-only
-- Aggregate conditional environmental
-- Low-frequency conditional environmental
-- Mid-frequency conditional environmental
-- High-frequency conditional environmental
-
-Add frequency-group season-only models only if they are retained for inference.
--->
+knitr::kable(
+  table_s1,
+  align = c("l", "l", "l", "l", "r")
+)
 ```
 
 ## Table S2. Aggregate-model sampling diagnostics
 
 ```{r}
 #| label: tbl-s2-aggregate-diagnostics
-#| tbl-cap: "Sampling diagnostics for the final aggregate Bayesian generalized additive models."
+#| tbl-cap: "MCMC sampling diagnostics for the final aggregate seasonal and conditional environmental models. Negative-binomial shape is summarized by the posterior median and 89% credible interval."
 #| echo: false
 #| warning: false
 #| message: false
 
-diag_file <- file.path(table_dir, "aggregate_model_diagnostics.csv")
+table_s2 <- supp_table("table_s2")
 
-if (file.exists(diag_file)) {
-  aggregate_diagnostics <- readr::read_csv(
-    diag_file,
-    show_col_types = FALSE
-  )
-
-  knitr::kable(aggregate_diagnostics)
-} else {
-  cat("PLACEHOLDER: generate aggregate_model_diagnostics.csv.")
-}
-```
-
-```{=html}
-<!--
-Suggested columns:
-Model
-N site-nights
-Chains
-Post-warmup draws
-Max R-hat
-Min bulk ESS
-Min tail ESS
-Divergences
-Maximum-treedepth transitions
-E-BFMI warnings
-Negative-binomial shape (median, interval)
--->
+knitr::kable(
+  table_s2,
+  digits = c(NA, 0, 0, 2, 0, 0, 0, 0, 2, 2, 2)
+)
 ```
 
 ## Table S3. Frequency-group model sampling diagnostics
 
 ```{r}
 #| label: tbl-s3-frequency-diagnostics
-#| tbl-cap: "Sampling diagnostics for the final low-, mid-, and high-frequency Bayesian generalized additive models."
+#| tbl-cap: "MCMC sampling diagnostics for the final low-, mid-, and high-frequency conditional environmental models. Negative-binomial shape is summarized by the posterior median and 89% credible interval."
 #| echo: false
 #| warning: false
 #| message: false
 
-diag_file <- file.path(table_dir, "frequency_model_diagnostics.csv")
+table_s3 <- supp_table("table_s3")
 
-if (file.exists(diag_file)) {
-  frequency_diagnostics <- readr::read_csv(
-    diag_file,
-    show_col_types = FALSE
-  )
-
-  knitr::kable(frequency_diagnostics)
-} else {
-  cat("PLACEHOLDER: populate after the frequency-group production fits are finalized.")
-}
+knitr::kable(
+  table_s3,
+  digits = c(NA, 0, 0, 2, 0, 0, 0, 0, 2, 2, 2)
+)
 ```
 
 ## Table S4. Species composition and characteristic echolocation-frequency groups
 
-The low-frequency group contains *Lasiurus cinereus*, *Eumops perotis*, and *Euderma maculatum*. The mid-frequency group contains *Eptesicus fuscus*, *Lasionycteris noctivagans*, *Tadarida brasiliensis*, *Antrozous pallidus*, *Myotis evotis*, *Myotis thysanodes*, and *Corynorhinus townsendii*. The high-frequency group contains *Myotis yumanensis*, *M. lucifugus*, *M. californicus*, *M. ciliolabrum*, *M. volans*, *Parastrellus hesperus*, and *Lasiurus frantzii*.
-
 ```{r}
 #| label: tbl-s4-species
-#| tbl-cap: "Bat species included in the analysis, characteristic echolocation frequency, assigned frequency group, and acoustic detection summary."
+#| tbl-cap: "Bat species included in the analysis, characteristic echolocation frequency, assigned frequency group, total number of 5-min detection intervals, and number of retained site-nights on which each species was detected."
 #| echo: false
 #| warning: false
 #| message: false
 
-species_file <- file.path(table_dir, "species_frequency_summary.csv")
+table_s4 <- supp_table("table_s4")
 
-if (file.exists(species_file)) {
-  species_summary <- readr::read_csv(
-    species_file,
-    show_col_types = FALSE
-  )
-
-  knitr::kable(species_summary)
-} else {
-  cat("PLACEHOLDER: generate species_frequency_summary.csv from species_freq and the corrected analytical data.")
-}
+knitr::kable(
+  table_s4,
+  align = c("l", "l", "l", "r", "l", "r", "r")
+)
 ```
 
-## Table S5. Detector effort and retained site-nights
+## Table S5. Retained sampling effort by site
 
 ```{r}
 #| label: tbl-s5-detector-effort
-#| tbl-cap: "Acoustic sampling effort by site after distinguishing detector-failure nights from sampled nights with zero bat activity."
+#| tbl-cap: "Retained acoustic sampling effort and activity summaries by site after nights without usable acoustic recordings were excluded. Zero-activity nights are sampled nights with usable recordings but no accepted bat detections."
 #| echo: false
 #| warning: false
 #| message: false
 
-effort_file <- file.path(table_dir, "detector_effort_summary.csv")
+table_s5 <- supp_table("table_s5")
 
-if (file.exists(effort_file)) {
-  effort_summary <- readr::read_csv(
-    effort_file,
-    show_col_types = FALSE
-  )
-
-  knitr::kable(effort_summary)
-} else {
-  cat("PLACEHOLDER: generate detector_effort_summary.csv.")
-}
-```
-
-```{=html}
-<!--
-Expected retained site-nights:
-BUC3 172
-BUL11 174
-BUL18 47
-BUL4 64
-GRP1 174
-GRP5 168
-LBL5 174
-THL1 83
-Total = 1,056
--->
+knitr::kable(
+  table_s5,
+  digits = c(NA, 0, 0, 0, 1, 1, NA, NA)
+)
 ```
 
 ## Table S6. Software and computational environment
@@ -200,163 +150,85 @@ Total = 1,056
 #| warning: false
 #| message: false
 
-software_file <- file.path(table_dir, "software_versions.csv")
+table_s6 <- supp_table("table_s6")
 
-if (file.exists(software_file)) {
-  software_versions <- readr::read_csv(
-    software_file,
-    show_col_types = FALSE
-  )
-
-  knitr::kable(software_versions)
-} else {
-  cat("PLACEHOLDER: run write_package_bib() to generate software_versions.csv.")
-}
+knitr::kable(table_s6)
 ```
 
 # Supplementary figures
 
 ## Figure S1. Site-specific seasonal phenology
 
-Site-specific seasonal smooths from the final aggregate model illustrate how the timing and magnitude of activity varied among sites around the shared seasonal trajectory.
-
 ```{r}
 #| label: fig-s1-site-phenology
-#| fig-cap: "Site-specific seasonal phenology in bat activity from the final aggregate model. Curves show posterior predictions across day of year for each site under the fitted factor-smooth structure. Lines represent posterior medians and ribbons show 89% credible intervals."
+#| fig-cap: "Site-specific seasonal phenology in bat activity from the final aggregate seasonal model. Gray curves show posterior median activity trajectories for individual sites, and the black curve and shaded intervals show the equal-site posterior average and associated credible intervals."
 #| echo: false
 #| warning: false
 #| message: false
+#| out-width: "100%"
 
-fig_file <- file.path(figure_dir, "site_specific_seasonal_phenology.png")
+include_supp_figure(
+  "Figure_S1_site_seasonality.PNG"
+)
 
-if (file.exists(fig_file)) {
-  knitr::include_graphics(fig_file)
-} else {
-  cat("PLACEHOLDER: generate site-specific seasonal phenology figure.")
-}
 ```
 
-## Figure S2. Residual temporal dependence during model development
-
-This figure documents how residual temporal structure changed as the likelihood and seasonal structure were revised. Calendar-day lags are used so gaps in sampling are not treated as consecutive observations.
+## Figure S2. Residual temporal dependence
 
 ```{r}
 #| label: fig-s2-acf-comparison
-#| fig-cap: "Calendar-aware residual autocorrelation for candidate aggregate models. The comparison illustrates the persistence of temporal dependence in simpler models and its reduction after site-specific seasonal phenology was represented."
+#| fig-cap: "Calendar-aware residual correlation for the final aggregate conditional environmental model and the final low-, mid-, and high-frequency conditional environmental models. Correlations are calculated using actual calendar-day lags so that gaps in sampling are not treated as consecutive observations."
 #| echo: false
 #| warning: false
 #| message: false
+#| out-width: "100%"
 
-fig_file <- file.path(figure_dir, "aggregate_acf_model_comparison.png")
+include_supp_figure("Figure_S2_residual_acf.PNG")
 
-if (file.exists(fig_file)) {
-  knitr::include_graphics(fig_file)
-} else {
-  cat("PLACEHOLDER: generate aggregate ACF model-comparison figure.")
-}
 ```
 
 ## Figure S3. Aggregate posterior predictive checks
 
 ```{r}
 #| label: fig-s3-aggregate-ppc
-#| fig-cap: "Posterior predictive checks for the final aggregate conditional environmental model, including the overall response distribution and test statistics for the mean, standard deviation, and frequency of zero-activity nights."
+#| fig-cap: "Posterior predictive checks for the final aggregate conditional environmental model. Checks compare the observed nightly activity distribution with replicated datasets generated from the posterior predictive distribution and evaluate key features of the response distribution."
 #| echo: false
 #| warning: false
 #| message: false
+#| out-width: "100%"
 
-fig_file <- file.path(figure_dir, "aggregate_ppc.png")
+include_supp_figure("Figure_S3_aggregate_ppc.PNG")
 
-if (file.exists(fig_file)) {
-  knitr::include_graphics(fig_file)
-} else {
-  cat("PLACEHOLDER: assemble aggregate posterior predictive checks.")
-}
 ```
 
 ## Figure S4. Site-specific posterior predictive checks
 
 ```{r}
 #| label: fig-s4-site-ppc
-#| fig-cap: "Observed and posterior-predictive summaries of nightly bat activity by site for the final aggregate conditional environmental model."
+#| fig-cap: "Site-specific posterior predictive checks for the final aggregate conditional environmental model. Crosses show observed site-level means and standard deviations of nightly activity; circles show posterior predictive medians and vertical intervals show 89% posterior predictive intervals."
 #| echo: false
 #| warning: false
 #| message: false
+#| out-width: "100%"
 
-fig_file <- file.path(figure_dir, "site_specific_ppc.png")
+include_supp_figure("Figure_S4_site_ppc.PNG")
 
-if (file.exists(fig_file)) {
-  knitr::include_graphics(fig_file)
-} else {
-  cat("PLACEHOLDER: generate site-specific posterior predictive checks.")
-}
 ```
 
-## Figure S5. Frequency-group posterior predictive checks and residual autocorrelation
+## Figure S5. Frequency-group posterior predictive checks
 
 ```{r}
 #| label: fig-s5-frequency-diagnostics
-#| fig-cap: "Posterior predictive checks and calendar-aware residual autocorrelation for the final low-, mid-, and high-frequency bat activity models."
+#| fig-cap: "Posterior predictive checks for the final low-, mid-, and high-frequency conditional environmental models. For each frequency group, checks compare the observed response distribution with posterior predictive replicates and evaluate the standard deviation and proportion of zero-activity nights."
 #| echo: false
 #| warning: false
 #| message: false
+#| out-width: "100%"
 
-fig_file <- file.path(figure_dir, "frequency_group_diagnostics.png")
+include_supp_figure("Figure_S5_frequency_ppc.PNG")
 
-if (file.exists(fig_file)) {
-  knitr::include_graphics(fig_file)
-} else {
-  cat("PLACEHOLDER: populate after final frequency-group models are accepted.")
-}
-```
-
-## Figure S6. High-frequency temperature sensitivity analysis
-
-```{=html}
-<!--
-The previous manuscript used Figure S6 to compare the high-frequency
-temperature response with and without BUL4, BUL18, and THL1. Retain this figure
-ONLY if the unusual cool-temperature response persists under the corrected
-sampling frame and site-specific seasonal factor smooth.
-
-If it no longer persists or the revised model makes the site-filtering analysis
-unnecessary, delete this section rather than carrying the old sensitivity
-analysis forward.
--->
-```
-
-```{r}
-#| label: fig-s6-high-temp-sensitivity
-#| fig-cap: "Sensitivity analysis for the high-frequency temperature response. This figure will be retained only if a cool-temperature peak persists in the final frequency-group model and requires evaluation of site-specific support."
-#| echo: false
-#| warning: false
-#| message: false
-
-fig_file <- file.path(figure_dir, "high_frequency_temperature_sensitivity.png")
-
-if (file.exists(fig_file)) {
-  knitr::include_graphics(fig_file)
-} else {
-  cat("PLACEHOLDER: conditional on the final high-frequency model.")
-}
 ```
 
 # Additional model assessment
 
-Routine trace plots need not be reproduced if the tabulated sampling diagnostics adequately document convergence and sampling quality. Additional graphical diagnostics should be retained when they evaluate a specific concern raised during model development, particularly posterior predictive fit, residual temporal structure, or sensitivity of a biological conclusion to site composition.
-
-```{=html}
-<!--
-SUPPLEMENT UPDATE CHECKLIST
-
-1. Generate Tables S1-S6 directly from pipeline outputs.
-2. Update all figure filenames to match figure_functions.R.
-3. Decide whether frequency-group seasonal curves belong in main text or supplement.
-4. Decide whether lunar group curves warrant a supplementary figure.
-5. Retain Figure S6 only if the high-frequency cold-temperature pattern persists.
-6. Add any model-development comparison requested by reviewers, but avoid dumping
-   every exploratory diagnostic into the supplement.
-7. All numerical diagnostics must come from FINAL four-chain fits, not one-chain
-   diagnostic models.
--->
-```
+Routine trace plots are not reproduced because the tabulated sampling diagnostics document convergence and effective sample sizes for the final models. The graphical diagnostics above focus on model adequacy relevant to the biological estimands: posterior predictive fit, among-site predictive performance, and remaining short-lag temporal dependence.
