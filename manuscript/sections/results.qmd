@@ -76,7 +76,7 @@ models wherever possible.
 
 ## Sampling and acoustic activity
 
-After excluding nights without usable acoustic recordings, the final analysis comprised 1,056 site-nights across eight sites and 179 sampling nights from late April through mid-October 2015 (@tbl-study-summary). Sampling effort varied among sites because of detector failures and other periods without usable acoustic data, ranging from 47 retained nights at BUL18 to 174 nights at the most intensively sampled sites.
+After reconstructing detector effort, the final analysis comprised 1,056 sampled site-nights across eight sites and 179 sampling nights from late April through mid-October 2015 (@tbl-study-summary). Nights without usable acoustic recordings were excluded as unsampled rather than treated as zero activity; sampled nights with no accepted bat detections were retained as legitimate zeroes. Sampling effort therefore varied among sites because of detector failures and other periods without usable acoustic data, ranging from 47 retained nights at BUL18 to 174 nights at the most intensively sampled sites.
 
 Across the retained site-nights, aggregate bat activity totaled 103,681 5-min detection intervals representing 17 species. Of these detections, 7,078 were assigned to the low-frequency group, 27,602 to the mid-frequency group, and 69,001 to the high-frequency group. Environmental conditions represented in the analysis spanned substantial variation in nightly temperature, relative humidity, and lunar illumination (@tbl-study-summary).
 
@@ -98,24 +98,17 @@ knitr::kable(
 
 ## Model adequacy and diagnostics
 
-The final models incorporated site-specific seasonal phenology using penalized factor-smooth interactions between day of year and site. This structure substantially accounted for temporal dependence in nightly activity. In the aggregate conditional model, residual autocorrelation declined from 0.379 at lag 1 to 0.208 at lag 2 and 0.168 at lag 3, approached zero by lag 4, and remained weak at longer lags. Thus, the remaining temporal dependence was limited primarily to the shortest time lags.
+The final models represented site-specific seasonal phenology using penalized factor-smooth interactions between day of year and site. In the aggregate conditional model, residual autocorrelation declined from 0.379 at a one-day lag to 0.208 at two days and 0.168 at three days, approached zero by four days, and remained weak at longer lags. Remaining temporal dependence was therefore concentrated primarily at the shortest lags.
 
-MCMC diagnostics indicated satisfactory posterior sampling. All reported $\hat{R}$ values were 1.00, with large bulk and tail effective sample sizes. Seven of 12,000 post-warmup transitions in the aggregate conditional model reached the maximum tree depth of 12. Posterior predictive checks showed that the model reproduced the overall distribution of nightly activity and site-specific mean activity well, although predictive variation differed somewhat among sites. In particular, variability was overpredicted at BUC3, BUL11, and LBL5 and modestly underpredicted at several other sites. Overall, the final model captured the principal seasonal, among-site, and distributional structure relevant to inference while retaining a parsimonious representation of the data.
+MCMC diagnostics indicated satisfactory posterior sampling. All reported $\hat{R}$ values were 1.00, with large bulk and tail effective sample sizes, and seven of 12,000 post-warmup transitions in the aggregate conditional model reached the maximum tree depth of 12. Posterior predictive checks reproduced the overall distribution of nightly activity and site-specific mean activity well. Predictive variance was overestimated at BUC3, BUL11, and LBL5 and modestly underestimated at several other sites, but the principal seasonal, among-site, and distributional features relevant to the environmental contrasts were adequately represented. Detailed sampling diagnostics, posterior predictive checks, and residual temporal diagnostics are provided in the Supplementary Material.
 
 ```{=html}
 <!--
 SUPPLEMENTARY MATERIAL:
-The detailed model-development sequence belongs primarily in the supplement.
-
-Suggested items:
-Figure S?: Poisson vs NB vs NB + site-specific seasonal smooth comparison.
-Figure S?: final density-overlay PPC.
-Figure S?: PPC of mean, SD, and zeros.
-Figure S?: site-specific PPC.
-Figure S?: residual ACF comparison.
-Table S?: MCMC diagnostics.
-
-The main text above should remain relatively short.
+Detailed MCMC diagnostics, posterior predictive checks, site-level predictive
+performance, and calendar-aware residual temporal diagnostics are reported in
+the Supplementary Material. Intermediate model-development fits are retained
+in the analysis repository rather than narrated in the manuscript.
 -->
 ```
 
@@ -154,20 +147,7 @@ include_manuscript_figure("Figure4_temperature.PNG")
 ```
 
 ```{=html}
-<!--
-IMPORTANT:
-Everything below this point should be populated from the FINAL frequency-group
-fits, not the old manuscript models.
 
-The old manuscript's frequency-group biological story can be used as a hypothesis
-to check, NOT as a result to carry forward automatically.
-
-Recommended order:
-1. humidity — primary mechanistic prediction
-2. temperature — thermal response
-3. seasonal phenology
-4. lunar phase — brief unless biologically notable
--->
 ```
 
 ### Frequency-dependent humidity responses

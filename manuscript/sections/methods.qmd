@@ -52,7 +52,9 @@ Each site was equipped with an Anabat II ultrasonic detector and CF-ZCAIM data s
 
 Echolocation calls were classified using Kaleidoscope Pro (Wildlife Acoustics Inc., version 5.1.8) with the Bats of North America 5.1.0 classifier at the "More Accurate (Conservative)" setting. Ten percent of classified calls were manually vetted.
 
-Bat activity was quantified using a modified Acoustic Activity Index [@miller2001] based on 5-min sampling intervals. Acoustic detections were divided into 5-min intervals, and nightly activity for each site was calculated as the number of intervals containing at least one bat call. Thus, the response represented the number of 5-min intervals per site-night in which bats were acoustically active rather than the total number of individual calls. Site-nights without usable acoustic data were excluded from analysis rather than treated as zero activity.
+Bat activity was quantified using a modified Acoustic Activity Index [@miller2001] based on 5-min sampling intervals. Acoustic detections were divided into 5-min intervals, and nightly activity for each site was calculated as the number of intervals containing at least one bat call. Thus, the response represented the number of 5-min intervals per site-night in which bats were acoustically active rather than the total number of individual calls.
+
+Because environmental measurements could be available on nights when acoustic sampling failed, we reconstructed detector effort independently of bat detections. Site-nights lacking evidence of usable acoustic recording were treated as unsampled and excluded from analysis; they were not assigned zero bat activity. Zero-activity observations were retained only when usable acoustic recordings demonstrated that the detector operated but no accepted bat detections occurred. This distinction prevented intermittent equipment failure from being represented as ecological absence in the seasonal and environmental response models.
 
 For environmental analyses, nightly mean temperature and relative humidity were standardized to a mean of zero and standard deviation of one. Day of year and lunar phase were retained on their original scales for model fitting.
 
@@ -80,7 +82,7 @@ To test whether environmental responses varied with characteristic echolocation 
 
 The low-frequency group contained *Lasiurus cinereus*, *Eumops perotis*, and *Euderma maculatum*. The mid-frequency group contained *Eptesicus fuscus*, *Lasionycteris noctivagans*, *Tadarida brasiliensis*, *Antrozous pallidus*, *Myotis evotis*, *Myotis thysanodes*, and *Corynorhinus townsendii*. The high-frequency group contained *Myotis yumanensis*, *M. lucifugus*, *M. californicus*, *M. ciliolabrum*, *M. volans*, *Parastrellus hesperus*, and *Lasiurus frantzii*. Full species-level information, characteristic frequencies, and detection totals are provided in Table S4.
 
-For each frequency group, nightly activity at each site was calculated as the number of 5-min intervals containing at least one detection from any species assigned to that group. The same model-development and diagnostic framework used for aggregate activity was then evaluated for the frequency-group datasets.
+For each frequency group, nightly activity at each site was calculated as the number of 5-min intervals containing at least one detection from any species assigned to that group. Frequency-group activity was analyzed using the same negative-binomial likelihood, site-specific seasonal structure, environmental predictors, and model-assessment framework used for aggregate activity.
 
 ## Bayesian generalized additive models
 
@@ -121,7 +123,7 @@ Smooth terms were estimated using the default thin-plate regression spline basis
 
 We used a weakly informative Normal(0, 10) prior for the intercept; smoothing parameters and the negative-binomial shape parameter used the regularizing defaults implemented by `brms`. Models were estimated using Hamiltonian Monte Carlo through the `cmdstanr` backend, with four chains of 4,000 iterations, including 1,000 warmup iterations per chain, yielding 12,000 post-warmup draws. Sampling used `adapt_delta = 0.99` and a maximum tree depth of 12.
 
-We assessed convergence and sampling quality using $\hat{R}$, bulk and tail effective sample sizes, divergent transitions, maximum-tree-depth warnings, and energy diagnostics. Model adequacy was evaluated using posterior predictive checks of the response distribution and site-level variation, including the mean, standard deviation, and frequency of zero-activity nights. Because sampling was interrupted at some sites by detector failures, residual temporal dependence was evaluated using calendar-day lags rather than row-order lags, ensuring that missing sampling nights were not treated as consecutive observations. We examined these residual correlations to determine whether important temporal structure remained after accounting for the shared and site-specific seasonal trajectories.
+We assessed convergence and sampling quality using $\hat{R}$, bulk and tail effective sample sizes, divergent transitions, maximum-tree-depth warnings, and energy diagnostics. Model adequacy was evaluated using posterior predictive checks of the response distribution and site-level variation, including the mean, standard deviation, and frequency of zero-activity nights. Because sampling was interrupted at some sites by detector failures, residual temporal dependence was evaluated using calendar-day lags rather than row-order lags, ensuring that gaps in acoustic sampling were not treated as consecutive observations. These residual correlations were used to assess whether important temporal structure remained after representing shared and site-specific seasonal phenology. Model adequacy was judged with respect to the ecological estimands of interest rather than by requiring the model to reproduce every feature of the observed data; additional temporal structure was not introduced solely to eliminate weak residual short-lag correlation when posterior predictive checks indicated adequate representation of the response features relevant to inference.
 
 Posterior summaries are reported as medians with 89% credible intervals. Environmental response curves were generated from the conditional environmental model by varying the focal predictor across its observed range while holding other continuous environmental predictors at their reference values. Seasonal predictions were obtained from the seasonal model and therefore represent the total fitted seasonal pattern rather than seasonality conditional on nightly temperature, relative humidity, or lunar phase.
 
@@ -133,12 +135,6 @@ BIBLIOGRAPHY NOTE:
 The citation keys above are provisional placeholders based on references already
 cited in the co-author manuscript. Replace them with the exact Better BibTeX
 keys exported from Zotero if your keys differ.
-
-MODEL UPDATE NOTE:
-Frequency-group production fits are still being finalized. Once those models
-are complete, update this Methods section only if their final likelihood,
-seasonal structure, priors, or sampling settings differ from the aggregate
-framework described above.
 
 SOFTWARE NOTE:
 Insert the exact R/package versions at final manuscript freeze if desired.
