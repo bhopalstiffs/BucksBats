@@ -1,5 +1,5 @@
 ---
-title: "Season, temperature, humidity, and lunar phase influence bat activity in the Sierra Nevada"
+title: "TBD"
 author:
   - name: Alan T. Hitch
     corresponding: true
@@ -53,7 +53,7 @@ lang: en-US
 
 bibliography:
   - references/bats.bib
-  # - references/packages.bib
+  - references/software.bib
 
 csl: references/functional-ecology.csl
 # reference-doc: manuscript-reference.docx
@@ -61,30 +61,21 @@ csl: references/functional-ecology.csl
 
 # Title options for co-author review {.unnumbered}
 
-**Option 1 — Current working title**
+**Option 1**
 
-Directed acyclic graph reveals frequency-dependent humidity sensitivity and thermal niche differentiation in a Sierra Nevada bat community
+Seasonal and environmental variation in Sierra Nevada bat activity reveals frequency-dependent sensitivity to humidity
 
 **Option 2**
 
-Atmospheric call attenuation, thermal niches, and migratory phenology jointly shape bat activity: a causal-inference analysis of a Sierra Nevada community
+Atmospheric attenuation predicts frequency-dependent humidity sensitivity in a temperate bat community
 
 **Option 3**
 
-Seasonal occupancy patterns reveal migratory structure and species-level heterogeneity in a temperate bird community
-
-**Option 4**
-
-Atmospheric attenuation predicts frequency-dependent humidity sensitivity in a temperate bat community: a causal-inference analysis[
-
-**Option 5**
-
-Untangling seasonal, weather, and lunar drivers of bat activity in the Sierra Nevada using causal models 
-
+Echolocation frequency predicts humidity sensitivity in a temperate bat community
 
 ---
 
-<!-- {{< include sections/abstract.qmd >}} -->
+{{< include sections/abstract.qmd >}}
 
 {{< include sections/introduction.qmd >}}
 
@@ -92,7 +83,7 @@ Untangling seasonal, weather, and lunar drivers of bat activity in the Sierra Ne
 
 {{< include sections/results.qmd >}}
 
-<!-- {{< include sections/discussion.qmd >}} -->
+{{< include sections/discussion.qmd >}}
 
 {{< include sections/acknowledgements.qmd >}}
 

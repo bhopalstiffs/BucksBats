@@ -44,27 +44,37 @@ include_manuscript_figure <- function(filename) {
 
 ## Study area and acoustic surveys
 
-Acoustic surveys were conducted at eight sites in Plumas County, California, in the northern Sierra Nevada, spanning an elevational gradient of 581–1,846 m. Most sites were near perennial water sources, including reservoirs (Bucks Lake, Lower Bucks Lake, Grizzly Forebay, and Three Lakes), tributary streams, and the North Fork Feather River; one site was situated in an upland meadow adjacent to forest (Figure 1). Surveys were conducted from April through October 2015, with detectors programmed to record from one hour before sunset to one hour after sunrise.
+Acoustic surveys were conducted at eight sites in Plumas County, California, in the northern Sierra Nevada, spanning an elevational gradient of 581–1,846 m. Most sites were near perennial water sources, including reservoirs (Bucks Lake, Lower Bucks Lake, Grizzly Forebay, and Three Lakes), tributary streams, and the North Fork Feather River; one site was situated in an upland meadow adjacent to forest (@fig-map). Surveys were conducted from April through October 2015, with detectors programmed to record from one hour before sunset to one hour after sunrise.
 
-Each site was equipped with an Anabat II ultrasonic detector and CF-ZCAIM data storage unit (Titley Electronics, Ballina, NSW, Australia) housed in a weatherproof enclosure mounted at least 1 m above the ground. Detectors were fitted with a microphone extension cable, weather shroud, and flat acoustic reflector. Units were powered by batteries recharged with 5-W solar panels and miniature charge controllers (EME Systems, Berkeley, California, USA). Detectors recorded nightly temperature and relative humidity. Lunar phase was obtained from the U.S. Naval Observatory and expressed from 0 (new moon) to 1 (full moon).
+```{r}
+#| label: fig-map
+#| fig-cap: "Locations of eight passive acoustic monitoring sites in Plumas County, California, USA, in the northern Sierra Nevada. Detectors were distributed across an elevational gradient and included sites associated with Bucks Lake, Lower Bucks Lake, Grizzly Forebay, Three Lakes, and surrounding stream and upland habitats. The inset shows the location of the study area within northern California."
+#| echo: false
+#| out-width: "85%"
+#| fig-align: center
+
+include_manuscript_figure("Figure1_map.PNG")
+```
+
+Each site was equipped with an Anabat II ultrasonic detector and CF-ZCAIM data storage unit (Titley Electronics, Ballina, NSW, Australia) housed in a weatherproof enclosure mounted at least 1 m above the ground. Detectors were fitted with a microphone extension cable, weather shroud, and flat acoustic reflector. Units were powered by batteries recharged with 5-W solar panels and miniature charge controllers (EME Systems, Berkeley, California, USA). Detectors recorded nightly temperature and relative humidity. Lunar phase was obtained from the U.S. Naval Observatory and represented on a scale from 0 (new moon) to 1 (full moon). This variable indexes position in the lunar cycle rather than realized nocturnal illumination at individual sites.
 
 ## Acoustic classification and activity index
 
 Echolocation calls were classified using Kaleidoscope Pro (Wildlife Acoustics Inc., version 5.1.8) with the Bats of North America 5.1.0 classifier at the "More Accurate (Conservative)" setting. Ten percent of classified calls were manually vetted.
 
-Bat activity was quantified using a modified Acoustic Activity Index [@miller2001] based on 5-min sampling intervals. Acoustic detections were divided into 5-min intervals, and nightly activity for each site was calculated as the number of intervals containing at least one bat call. Thus, the response represented the number of 5-min intervals per site-night in which bats were acoustically active rather than the total number of individual calls.
+Bat activity was quantified using a modified Acoustic Activity Index [@millerMethodDeterminingRelative2001] based on 5-min sampling intervals. For each site-night, we counted the number of 5-min intervals containing at least one accepted bat detection. The response therefore represents the number of intervals in which bats were acoustically detected rather than the number of individual calls or bats.
 
 Because environmental measurements could be available on nights when acoustic sampling failed, we reconstructed detector effort independently of bat detections. Site-nights lacking evidence of usable acoustic recording were treated as unsampled and excluded from analysis; they were not assigned zero bat activity. Zero-activity observations were retained only when usable acoustic recordings demonstrated that the detector operated but no accepted bat detections occurred. This distinction prevented intermittent equipment failure from being represented as ecological absence in the seasonal and environmental response models.
 
 For environmental analyses, nightly mean temperature and relative humidity were standardized to a mean of zero and standard deviation of one. Day of year and lunar phase were retained on their original scales for model fitting.
 
-## Causal structure and seasonal activity
+## Causal structure and estimands
 
-The causal structure used to distinguish seasonal and nightly environmental associations is shown in @fig-dag. Day of year was represented as a common cause of temperature, relative humidity, and bat activity, while temperature was additionally allowed to influence relative humidity. Temperature, relative humidity, and lunar phase were each represented as having direct effects on bat activity. This structure distinguishes the total seasonal pattern in activity from seasonal structure remaining after conditioning on nightly environmental conditions and provides the basis for estimating conditional environmental responses.
+We used the causal structure in @fig-dag to distinguish seasonal variation from conditional associations with nightly environmental conditions. Day of year was represented as a common cause of temperature, relative humidity, and bat acoustic activity, and temperature was additionally allowed to influence relative humidity. Temperature, relative humidity, and lunar phase were each represented as predictors of acoustic activity. The DAG was used to define the quantities estimated by the seasonal and environmental models rather than to infer causal effects from the observational data alone.
 
 ```{r}
 #| label: fig-dag
-#| fig-cap: "Directed acyclic graph representing the hypothesized causal relationships among day of year, nightly temperature, relative humidity, lunar phase, and bat acoustic activity. Arrows indicate the assumed direction of causal influence. Day of year represents seasonal structure in bat activity and environmental conditions not otherwise represented by the measured nightly covariates. Temperature was assumed to influence relative humidity in addition to having a direct effect on bat activity. Relative humidity and lunar phase were also hypothesized to directly influence bat activity. The graph was used to guide model specification and interpretation of total seasonal and conditional environmental associations."
+#| fig-cap: "Directed acyclic graph representing the hypothesized relationships among day of year, nightly temperature, relative humidity, lunar phase, and bat acoustic activity. Arrows represent assumed causal relationships used to guide model specification and interpretation. Day of year represents seasonal structure in activity and environmental conditions not otherwise represented by the measured nightly covariates. Temperature was hypothesized to influence relative humidity in addition to bat activity; relative humidity and lunar phase were also hypothesized to influence activity. The graph was used to define the total seasonal and conditional environmental estimands."
 #| echo: false
 #| out-width: "85%"
 #| fig-align: center
@@ -72,13 +82,13 @@ The causal structure used to distinguish seasonal and nightly environmental asso
 include_manuscript_figure("Figure2_DAG.PNG")
 ```
 
-Two aggregate-community models represented the primary seasonal and environmental estimands. The **total seasonal model** estimated variation in bat activity across day of year without conditioning on nightly temperature, relative humidity, or lunar phase. Because nightly weather is itself seasonally structured, this model describes the overall seasonal pattern expressed under the environmental conditions occurring through the study period.
+The total seasonal model estimated variation in acoustic activity across day of year without conditioning on nightly temperature, relative humidity, or lunar phase. Because environmental conditions are themselves seasonally structured, this model represents the seasonal activity pattern expressed under the environmental conditions occurring during the study.
 
-The **conditional environmental model** included day of year, nightly temperature, relative humidity, and lunar phase simultaneously. Environmental response curves from this model therefore describe the association with each focal environmental variable after conditioning on the remaining modeled predictors. The day-of-year smooth from this model represents residual seasonal phenology after accounting for nightly environmental conditions. Comparison of the total seasonal and conditional seasonal patterns was used to distinguish the observed seasonal activity pattern from seasonal structure remaining after nightly weather and lunar phase were held constant.
+The conditional environmental model included day of year, nightly temperature, relative humidity, and lunar phase simultaneously. Environmental response curves therefore represent associations with each focal predictor conditional on the remaining modeled predictors and site-specific seasonal phenology. The day-of-year component of this model represents seasonal structure remaining after accounting for the measured nightly environmental conditions. Comparing the total and conditional seasonal trajectories allowed us to distinguish the observed seasonal pattern from seasonal structure not associated with the measured nightly covariates.
 
 ## Characteristic echolocation-frequency groups
 
-To test whether environmental responses varied with characteristic echolocation frequency, we classified each species into one of three frequency groups: low (\<25 kHz), mid (25–40 kHz), and high (\>40 kHz). Characteristic frequency ($F_c$) was defined as the frequency at the lowest, flattest portion of the descending frequency-modulated sweep of an echolocation call, where call bandwidth is narrowest and the call typically provides its diagnostic signal for species identification [@fenton1981; @ofarrell1999]. Group boundaries were based on species accounts in the Western Bat Working Group reference and the Kaleidoscope Pro classifier reference-call library and correspond to frequency ranges over which atmospheric absorption of ultrasound is expected to differ in sensitivity to humidity [@griffin1971; @lawrence1982].
+To test whether environmental responses varied with characteristic echolocation frequency, we classified each species into one of three frequency groups: low (\<25 kHz), mid (25–40 kHz), and high (\>40 kHz). Characteristic frequency ($F_c$) was defined as the frequency at the lowest, flattest portion of the descending frequency-modulated sweep of an echolocation call, where call bandwidth is narrowest and the call typically provides its diagnostic signal for species identification [@fentonRecognitionSpeciesInsectivorous1981; @ofarrellQualitativeIdentificationFreeFlying1999]. Group boundaries were based on species accounts in the Western Bat Working Group reference and the Kaleidoscope Pro classifier reference-call library and were chosen to represent broad frequency ranges over which atmospheric attenuation of ultrasound is expected to differ in its sensitivity to environmental conditions [@griffinImportanceAtmosphericAttenuation1971; @lawrenceMeasurementsAtmosphericAttenuation1982].
 
 The low-frequency group contained *Lasiurus cinereus*, *Eumops perotis*, and *Euderma maculatum*. The mid-frequency group contained *Eptesicus fuscus*, *Lasionycteris noctivagans*, *Tadarida brasiliensis*, *Antrozous pallidus*, *Myotis evotis*, *Myotis thysanodes*, and *Corynorhinus townsendii*. The high-frequency group contained *Myotis yumanensis*, *M. lucifugus*, *M. californicus*, *M. ciliolabrum*, *M. volans*, *Parastrellus hesperus*, and *Lasiurus frantzii*. Full species-level information, characteristic frequencies, and detection totals are provided in Table S4.
 
@@ -86,11 +96,11 @@ For each frequency group, nightly activity at each site was calculated as the nu
 
 ## Bayesian generalized additive models
 
-We modeled nightly acoustic activity using Bayesian generalized additive models (GAMs) fit in `brms` [@burkner2017] with Stan [@carpenter2017]. Nightly activity was represented as the number of 5-min intervals containing at least one bat call and was modeled using a negative-binomial distribution with a log link to accommodate the substantial variation among nights.
+We modeled nightly acoustic activity using Bayesian generalized additive models (GAMs) with a negative-binomial distribution and log link. The negative-binomial likelihood accommodated substantial among-night variation in the number of occupied 5-min intervals.
 
-Seasonal activity was allowed to vary among sites. Although the eight sites occurred within the same geographic region, local differences in habitat, elevation, species composition, resource availability, and roost use could produce differences in the timing and magnitude of seasonal bat activity. We therefore represented seasonality using a population-level smooth of day of year together with a factor-smooth interaction between day of year and site. The factor smooth estimates penalized site-specific departures from the overall seasonal trajectory, allowing local phenology to differ while sharing information among sites.
+We represented seasonal activity using a population-level smooth of day of year together with a factor-smooth interaction between day of year and site. The factor smooth estimated penalized site-specific departures from the overall seasonal trajectory, allowing the timing and magnitude of phenology to differ among sites while sharing information across sites.
 
-We fit two complementary models to distinguish overall seasonal variation from conditional environmental relationships. The total seasonal model was
+The total seasonal model was
 
 $$
 n_{it} \sim \mathrm{NegBinomial}(\mu_{it}, \phi),
@@ -101,7 +111,7 @@ $$
 \beta_0 + f(\mathrm{DOY}_{it}) + f_{\mathrm{site}}(\mathrm{DOY}_{it}),
 $$
 
-where $n_{it}$ is the number of occupied 5-min intervals at site $i$ on night $t$, $f(\mathrm{DOY})$ represents the overall seasonal trajectory, and $f_{\mathrm{site}}(\mathrm{DOY})$ represents penalized site-specific departures from that trajectory. Because this model does not condition on nightly environmental covariates, it describes the total seasonal pattern in acoustic activity, including seasonal variation associated with changing environmental conditions.
+where $n_{it}$ is the number of 5-min intervals containing at least one bat detection at site $i$ on night $t$, $f(\mathrm{DOY})$ represents the overall seasonal trajectory, and $f_{\mathrm{site}}(\mathrm{DOY})$ represents penalized site-specific departures from that trajectory.
 
 The conditional environmental model was
 
@@ -115,28 +125,20 @@ f(RH_{it}) +
 f(L_{it}),
 $$
 
-where $T$ is standardized nightly mean temperature, $RH$ is standardized nightly mean relative humidity, and $L$ is lunar phase. This model estimates the relationship between each environmental predictor and acoustic activity conditional on the other predictors and seasonal structure in the model. Thus, the seasonal and environmental models address different questions: the former describes the overall seasonal pattern in activity, whereas the latter evaluates environmental relationships after accounting for seasonality and site-specific phenology.
+where $T$ is standardized nightly mean temperature, $RH$ is standardized nightly mean relative humidity, and $L$ is lunar phase.
 
 Smooth terms were estimated using the default thin-plate regression spline basis in `brms`/`mgcv`, and site-specific seasonal trajectories were represented using a factor-smooth basis (`bs = "fs"`). Because the factor smooth is fully penalized and represents site-level differences in the seasonal trajectory, we did not include an additional site random intercept.
 
 ## Priors, computation, and model assessment
 
-We used a weakly informative Normal(0, 10) prior for the intercept; smoothing parameters and the negative-binomial shape parameter used the regularizing defaults implemented by `brms`. Models were estimated using Hamiltonian Monte Carlo through the `cmdstanr` backend, with four chains of 4,000 iterations, including 1,000 warmup iterations per chain, yielding 12,000 post-warmup draws. Sampling used `adapt_delta = 0.99` and a maximum tree depth of 12.
+We used a weakly informative Normal(0, 10) prior for the intercept; smoothing parameters and the negative-binomial shape parameter used the regularizing defaults implemented by `brms` [@brms]. Models were estimated using Hamiltonian Monte Carlo, with four chains of 4,000 iterations, including 1,000 warmup iterations per chain, yielding 12,000 post-warmup draws. Sampling used `adapt_delta = 0.99` and a maximum tree depth of 12.
 
-We assessed convergence and sampling quality using $\hat{R}$, bulk and tail effective sample sizes, divergent transitions, maximum-tree-depth warnings, and energy diagnostics. Model adequacy was evaluated using posterior predictive checks of the response distribution and site-level variation, including the mean, standard deviation, and frequency of zero-activity nights. Because sampling was interrupted at some sites by detector failures, residual temporal dependence was evaluated using calendar-day lags rather than row-order lags, ensuring that gaps in acoustic sampling were not treated as consecutive observations. These residual correlations were used to assess whether important temporal structure remained after representing shared and site-specific seasonal phenology. Model adequacy was judged with respect to the ecological estimands of interest rather than by requiring the model to reproduce every feature of the observed data; additional temporal structure was not introduced solely to eliminate weak residual short-lag correlation when posterior predictive checks indicated adequate representation of the response features relevant to inference.
+We assessed convergence and sampling quality using $\hat{R}$, bulk and tail effective sample sizes, divergent transitions, maximum-tree-depth warnings, and energy diagnostics. Model adequacy was evaluated using posterior predictive checks of the response distribution and site-level variation, including the mean, standard deviation, and frequency of zero-activity nights. Because sampling was interrupted at some sites by detector failures, residual temporal dependence was evaluated using calendar-day rather than row-order lags so that gaps in sampling were not treated as consecutive observations. Additional temporal structure was considered only when residual dependence indicated lack of fit relevant to the ecological estimands.
 
-Posterior summaries are reported as medians with 89% credible intervals. Environmental response curves were generated from the conditional environmental model by varying the focal predictor across its observed range while holding other continuous environmental predictors at their reference values. Seasonal predictions were obtained from the seasonal model and therefore represent the total fitted seasonal pattern rather than seasonality conditional on nightly temperature, relative humidity, or lunar phase.
+Posterior summaries are reported as medians with 89% credible intervals. Environmental response curves were generated by varying the focal environmental predictor across its observed range, averaging predictions over the observed distribution of sampled days of year and weighting sites equally, while holding the remaining environmental predictors at their reference values. Environmental contrasts were calculated between the 10th and 90th percentiles of observed temperature and relative humidity and between new moon (0) and full moon (1) for lunar phase. Seasonal predictions were averaged equally across sites. Predictions from the total seasonal model represent the overall seasonal pattern, whereas predictions from the conditional environmental model represent seasonal structure after accounting for nightly temperature, relative humidity, and lunar phase.
 
-All analyses were conducted in R. Models were fit with `brms` [@burkner2017] using Stan [@carpenter2017] through `cmdstanr`; posterior summaries and predictions were generated using `posterior` and `tidybayes` [@kay2023].
-
-```{=html}
-<!--
-BIBLIOGRAPHY NOTE:
-The citation keys above are provisional placeholders based on references already
-cited in the co-author manuscript. Replace them with the exact Better BibTeX
-keys exported from Zotero if your keys differ.
-
-SOFTWARE NOTE:
-Insert the exact R/package versions at final manuscript freeze if desired.
--->
-```
+All analyses were conducted in R [@R]. Bayesian generalized additive
+models were fit with `brms` [@brms] through `cmdstanr` [@cmdstanr],
+with spline bases implemented in `mgcv` [@mgcv]. Posterior summaries
+and predictions were generated using `posterior` [@posterior] and
+`tidybayes` [@tidybayes].

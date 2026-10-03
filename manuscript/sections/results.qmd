@@ -54,31 +54,11 @@ include_manuscript_figure <- function(filename) {
 
 ```
 
-```{=html}
-<!--
-PURPOSE OF THIS FILE
-
-This Results file is deliberately separated into:
-1. results that are already supported by the corrected data and final aggregate models;
-2. clearly marked placeholders for frequency-group results that should be populated
-   only after the final diagnostic/production fits have been accepted.
-
-The prose is written for a Functional Ecology-style manuscript: lead with the
-biological pattern, support it with model output, and keep model-diagnostic detail
-brief in the main text while directing fuller diagnostics to the Supplementary
-Material.
-
-Do not restore numerical results from an older model merely because they appeared
-in a previous manuscript draft. Recompute figure-derived values from the final
-models wherever possible.
--->
-```
-
 ## Sampling and acoustic activity
 
-After reconstructing detector effort, the final analysis comprised 1,056 sampled site-nights across eight sites and 179 sampling nights from late April through mid-October 2015 (@tbl-study-summary). Nights without usable acoustic recordings were excluded as unsampled rather than treated as zero activity; sampled nights with no accepted bat detections were retained as legitimate zeroes. Sampling effort therefore varied among sites because of detector failures and other periods without usable acoustic data, ranging from 47 retained nights at BUL18 to 174 nights at the most intensively sampled sites.
+The analysis comprised 1,056 sampled site-nights across eight sites and 179 sampling nights from late April through mid-October 2015 (@tbl-study-summary). Nights without usable acoustic recordings were excluded as unsampled rather than treated as zero activity; sampled nights with no accepted bat detections were retained as legitimate zeroes. Sampling effort therefore varied among sites because of detector failures and other periods without usable acoustic data, ranging from 47 retained nights at BUL18 to 174 nights at the most intensively sampled sites.
 
-Across the retained site-nights, aggregate bat activity totaled 103,681 5-min detection intervals representing 17 species. Of these detections, 7,078 were assigned to the low-frequency group, 27,602 to the mid-frequency group, and 69,001 to the high-frequency group. Environmental conditions represented in the analysis spanned substantial variation in nightly temperature, relative humidity, and lunar illumination (@tbl-study-summary).
+Across the retained site-nights, aggregate bat activity totaled 103,681 5-min detection intervals representing 17 species. Of these detections, 7,078 were assigned to the low-frequency group, 27,602 to the mid-frequency group, and 69,001 to the high-frequency group. Environmental conditions represented in the analysis spanned substantial variation in nightly temperature, relative humidity, and lunar phase (@tbl-study-summary).
 
 ```{r}
 #| label: tbl-study-summary
@@ -98,23 +78,13 @@ knitr::kable(
 
 ## Model adequacy and diagnostics
 
-The final models represented site-specific seasonal phenology using penalized factor-smooth interactions between day of year and site. In the aggregate conditional model, residual autocorrelation declined from 0.379 at a one-day lag to 0.208 at two days and 0.168 at three days, approached zero by four days, and remained weak at longer lags. Remaining temporal dependence was therefore concentrated primarily at the shortest lags.
+The models represented site-specific seasonal phenology using penalized factor-smooth interactions between day of year and site. In the aggregate conditional model, residual autocorrelation declined from 0.379 at a one-day lag to 0.208 at two days and 0.168 at three days, approached zero by four days, and remained weak at longer lags. Remaining temporal dependence was therefore concentrated primarily at the shortest lags.
 
 MCMC diagnostics indicated satisfactory posterior sampling. All reported $\hat{R}$ values were 1.00, with large bulk and tail effective sample sizes, and seven of 12,000 post-warmup transitions in the aggregate conditional model reached the maximum tree depth of 12. Posterior predictive checks reproduced the overall distribution of nightly activity and site-specific mean activity well. Predictive variance was overestimated at BUC3, BUL11, and LBL5 and modestly underestimated at several other sites, but the principal seasonal, among-site, and distributional features relevant to the environmental contrasts were adequately represented. Detailed sampling diagnostics, posterior predictive checks, and residual temporal diagnostics are provided in the Supplementary Material.
 
-```{=html}
-<!--
-SUPPLEMENTARY MATERIAL:
-Detailed MCMC diagnostics, posterior predictive checks, site-level predictive
-performance, and calendar-aware residual temporal diagnostics are reported in
-the Supplementary Material. Intermediate model-development fits are retained
-in the analysis repository rather than narrated in the manuscript.
--->
-```
-
 ## Seasonal activity
 
-Seasonal activity varied nonlinearly across the sampling period, and the inferred seasonal pattern changed substantially after accounting for nightly environmental conditions (@fig-seasonality). In the total seasonal model, equal-site averaged activity declined through May, increased to a first summer maximum in June, declined in July, and increased again in early August before falling through September and October (@fig-seasonality`a`). After conditioning on nightly temperature, relative humidity, and lunar phase, the seasonal trajectory was markedly different: activity was highest early in the sampling season, declined sharply from May into June, and remained comparatively low through most of the summer and autumn, with only modest increases in August and September (@fig-seasonality`b`). Thus, much of the pronounced mid-summer structure in the total seasonal pattern was associated with seasonal variation in the measured environmental conditions, while the conditional day-of-year effect was dominated by elevated activity early in the sampling season. Seasonal phenology also differed substantially among sites in both the magnitude and timing of activity (@fig-seasonality`c`), supporting the use of site-specific seasonal smooths rather than a single common seasonal trajectory.
+Seasonal activity varied nonlinearly across the sampling period, and the inferred seasonal pattern changed substantially after accounting for nightly environmental conditions (@fig-seasonality). In the total seasonal model, activity averaged equally across sites declined through May, increased to a first summer maximum in June, declined in July, and increased again in early August before falling through September and October (@fig-seasonality`a`). After conditioning on nightly temperature, relative humidity, and lunar phase, the seasonal trajectory was markedly different: activity was highest early in the sampling season, declined sharply from May into June, and remained comparatively low through most of the summer and autumn, with only modest increases in August and September (@fig-seasonality`b`). Thus, much of the pronounced mid-summer structure in the total seasonal pattern was associated with seasonal variation in the measured environmental conditions, while the conditional day-of-year effect was dominated by elevated activity early in the sampling season. Seasonal phenology also differed substantially among sites in both the magnitude and timing of activity (@fig-seasonality`c`), supporting the use of site-specific seasonal smooths rather than a single common seasonal trajectory.
 
 ```{r}
 #| label: fig-seasonality
@@ -152,11 +122,11 @@ include_manuscript_figure("Figure4_temperature.PNG")
 
 ### Frequency-dependent humidity responses
 
-Relative humidity was associated with markedly different patterns of activity among frequency groups (@fig-humidity). Across the central 80% of observed nightly relative humidity conditions (49.4–84.6%), expected activity declined substantially for both the mid- and high-frequency groups. For high-frequency bats, expected activity decreased from 52.4 to 29.0 5-min detection intervals per night, corresponding to a median ratio of 0.55 (89% CrI: 0.50–0.62) and a posterior probability of a decrease of 1.00. Mid-frequency activity declined from 19.8 to 13.7 intervals per night over the same humidity range (median ratio = 0.69, 89% CrI: 0.58–0.83; posterior probability of decrease > 0.999). In contrast, low-frequency activity showed little evidence of an overall decline, increasing slightly from 4.32 to 5.32 intervals per night (median ratio = 1.23, 89% CrI: 0.97–1.56; posterior probability of decrease = 0.083). Response curves were nonlinear, particularly for the mid-frequency group, but declines became pronounced at high relative humidity for both the mid- and high-frequency groups, whereas activity of the low-frequency group remained comparatively insensitive across the observed humidity gradient.
+Relative humidity was associated with systematically different patterns of acoustic activity among frequency groups (@fig-humidity). Across the central 80% of observed nightly relative humidity conditions (49.4–84.6%), expected activity declined substantially for both the mid- and high-frequency groups, with the strongest decline occurring in the high-frequency group. For high-frequency bats, expected activity decreased from 52.4 to 29.0 5-min detection intervals per night, corresponding to a median ratio of 0.55 (89% CrI: 0.50–0.62) and a posterior probability of a decrease of 1.00. Mid-frequency activity declined from 19.8 to 13.7 intervals per night over the same humidity range (median ratio = 0.69, 89% CrI: 0.58–0.83; posterior probability of decrease > 0.999). In contrast, low-frequency activity showed little evidence of an overall decline, increasing slightly from 4.32 to 5.32 intervals per night (median ratio = 1.23, 89% CrI: 0.97–1.56; posterior probability of decrease = 0.083). Response curves were nonlinear, particularly for the mid-frequency group, but declines became pronounced at high relative humidity for both the mid- and high-frequency groups, whereas activity of the low-frequency group remained comparatively insensitive across the observed humidity gradient.
 
 ```{r}
 #| label: fig-humidity
-#| fig-cap: "Conditional relationships between nightly mean relative humidity and bat activity for (a) low-, (b) mid-, and (c) high-frequency echolocation groups. Lines show posterior median expected numbers of 5-min detection intervals per night, with inner and outer ribbons representing 50% and 89% credible intervals, respectively. Predictions were generated from the frequency-group-specific Bayesian generalized additive models while holding the other environmental predictors at their reference values and averaging over the seasonal effect. Note that y-axis scales differ among panels to emphasize the shape and uncertainty of the response within each frequency group."
+#| fig-cap: "Conditional relationships between nightly mean relative humidity and bat acoustic activity for (a) low-, (b) mid-, and (c) high-frequency echolocation groups. Lines show posterior median expected numbers of 5-min detection intervals per night, with inner and outer ribbons representing 50% and 89% credible intervals, respectively. Predictions were generated across the observed relative-humidity range and averaged over the observed distribution of sampled days of year, with each site weighted equally; temperature and lunar phase were held at their reference values. Y-axis scales differ among panels to emphasize response shape and uncertainty within each frequency group."
 #| fig-width: 16
 #| fig-height: 5.5
 #| out-width: "100%"
@@ -165,28 +135,13 @@ Relative humidity was associated with markedly different patterns of activity am
 include_manuscript_figure("Figure5_humidity.PNG")
 ```
 
+### Lunar-phase responses among frequency groups
 
-### Frequency-specific seasonal phenology
-
-**\[PENDING FINAL FREQUENCY-GROUP FITS.\]**
-
-```{=html}
-<!--
-Potentially Figure S rather than main text unless it materially explains the
-aggregate seasonal decomposition.
-
-This is where we can determine whether the residual spring/autumn pattern is
-concentrated in particular frequency groups/species assemblages.
--->
-```
-
-### Lunar responses among frequency groups
-
-Associations between lunar illumination and bat activity also differed among frequency groups (@fig-lunar). High-frequency activity increased with lunar illumination, with expected activity increasing by 10.4 5-min detection intervals per night from new moon to full moon (89% CrI: 7.02–14.4). This corresponded to a 1.28-fold increase in expected activity (89% CrI: 1.18–1.39), with essentially all posterior draws supporting an increase. Low-frequency activity showed weaker evidence of a response in the opposite direction, declining by a median of 0.92 intervals per night from new moon to full moon (89% CrI: −2.06–0.25; posterior probability of a decrease = 0.898). Mid-frequency activity exhibited a nonlinear relationship with lunar illumination, but the overall new- to full-moon contrast was comparatively small and uncertain (median difference = 1.81 intervals per night, 89% CrI: −1.00–4.80; posterior probability of an increase = 0.850). Thus, the clearest lunar response occurred among high-frequency bats, for which activity increased across the lunar illumination gradient.
+Associations between lunar phase and bat acoustic activity differed among frequency groups (@fig-lunar). High-frequency activity increased from new moon toward full moon, with expected activity increasing by 10.4 5-min detection intervals per night between the two endpoints (89% CrI: 7.02–14.4). This corresponded to a 1.28-fold increase in expected activity (89% CrI: 1.18–1.39), with essentially all posterior draws supporting an increase. Low-frequency activity showed weaker evidence of a response in the opposite direction, declining by a median of 0.92 intervals per night from new moon to full moon (89% CrI: −2.06–0.25; posterior probability of a decrease = 0.898). Mid-frequency activity exhibited a nonlinear relationship with lunar phase, but the overall new- to full-moon contrast was comparatively small and uncertain (median difference = 1.81 intervals per night, 89% CrI: −1.00–4.80; posterior probability of an increase = 0.850). Thus, the clearest lunar-phase response occurred among high-frequency bats, for which activity was higher toward the full-moon end of the lunar cycle.
 
 ```{r}
 #| label: fig-lunar
-#| fig-cap: "Conditional relationships between lunar illumination and bat activity for (a) low-, (b) mid-, and (c) high-frequency groups. Lunar illumination ranges from 0 (new moon) to 1 (full moon). Lines show posterior median expected numbers of 5-min detection intervals per night, with inner and outer ribbons representing 50% and 89% credible intervals, respectively. Predictions were generated from the frequency-group-specific Bayesian generalized additive models while holding temperature and relative humidity at their reference values and averaging over the seasonal effect. Note that y-axis scales differ among panels to emphasize the shape and uncertainty of the response within each frequency group."
+#| fig-cap: "Conditional relationships between lunar phase and bat acoustic activity for (a) low-, (b) mid-, and (c) high-frequency echolocation groups. Lunar phase is represented from 0 (new moon) to 1 (full moon). Lines show posterior median expected numbers of 5-min detection intervals per night, with inner and outer ribbons representing 50% and 89% credible intervals, respectively. Predictions were generated across the observed lunar-phase range and averaged over the observed distribution of sampled days of year, with each site weighted equally; temperature and relative humidity were held at their reference values. Y-axis scales differ among panels to emphasize response shape and uncertainty within each frequency group."
 #| fig-width: 16
 #| fig-height: 5.5
 #| out-width: "100%"
@@ -197,7 +152,7 @@ include_manuscript_figure("Figure6_lunar.PNG")
 
 ### Environmental contrasts
 
-Posterior contrasts summarized the differing environmental responses among frequency groups (@tbl-environmental-contrasts). Increasing temperature from the 10th to the 90th percentile of observed nightly conditions was associated with higher predicted activity in all three groups, although the proportional increase was substantially larger for the low- and mid-frequency groups than for the high-frequency group. In contrast, increasing relative humidity over the same portion of its observed distribution was associated with pronounced declines in mid- and high-frequency activity, whereas the low-frequency response was comparatively weak. Lunar illumination produced a smaller and less consistent response across groups, except for the high-frequency group, for which predicted activity was higher under full than new moon conditions. Together, these contrasts reinforce the distinct environmental response profiles evident in the posterior response curves.
+Posterior contrasts summarized the differing environmental responses among frequency groups (@tbl-environmental-contrasts). Increasing temperature from the 10th to the 90th percentile of observed nightly conditions was associated with higher predicted activity in all three groups, although the proportional increase was substantially larger for the low- and mid-frequency groups than for the high-frequency group. In contrast, increasing relative humidity over the same portion of its observed distribution was associated with pronounced declines in mid- and high-frequency activity, whereas the low-frequency response was comparatively weak. Lunar phase was associated with smaller and less consistent differences across groups, except for the high-frequency group, for which predicted activity was higher under full- than new-moon conditions.
 
 ```{r}
 #| label: tbl-environmental-contrasts
@@ -213,96 +168,4 @@ knitr::kable(
   table_2,
   align = c("l", "l", "l", "r", "r", "c", "c", "c")
 )
-```
-
-## Summary of principal findings
-
-```{=html}
-<!--
-WRITE THIS LAST.
-
-For Functional Ecology, this should be a short transition into Discussion,
-not a second Discussion section.
-
-Possible structure, ONLY IF supported by final models:
-
-"Together, the analyses separated three sources of variation that were
-confounded in simpler descriptions of nightly bat activity. First, much of the
-apparent seasonal trajectory reflected changing nightly environmental
-conditions, while site-specific phenological structure remained after those
-conditions were controlled. Second, temperature and humidity were the dominant
-nightly environmental correlates of aggregate activity, whereas lunar phase had
-a smaller effect. Third, humidity responses differed among characteristic
-frequency groups in the direction predicted by frequency-dependent atmospheric
-attenuation."
-
-Do not activate this paragraph until all final frequency fits are complete.
--->
-```
-
-# Tables and figures to generate
-
-```{=html}
-<!--
-This section is an internal production checklist. Delete it from the manuscript
-before submission.
-
-MAIN TEXT — tentative
-
-Table 1.
-Environmental and sampling summary for the corrected analysis dataset.
-
-Figure 1.
-Study map / detector locations.
-
-Figure 2.
-DAG.
-
-Figure 3.
-Total versus conditional seasonal activity.
-
-Figure 4.
-Aggregate conditional environmental effects:
-temperature, RH, lunar phase.
-
-Figure 5.
-Frequency-group humidity responses.
-
-Figure 6.
-Frequency-group temperature responses, if biologically informative enough for
-main text. Otherwise move to supplement.
-
-SUPPLEMENT — tentative
-
-Table S1.
-Model definitions / estimands.
-
-Table S2.
-Aggregate-model diagnostics.
-
-Table S3.
-Frequency-group model diagnostics.
-
-Table S4.
-Species, characteristic frequency, frequency group, detection totals.
-
-Figure S1.
-Site-specific seasonal smooths.
-
-Figure S2.
-Model-development ACF comparison.
-
-Figure S3.
-Aggregate PPCs.
-
-Figure S4.
-Site-specific PPCs.
-
-Figure S5+.
-Frequency-group PPCs / residual ACFs.
-
-Additional sensitivity figure:
-High-frequency temperature response with and without low-activity/cold sites,
-ONLY if still scientifically necessary after final model fitting.
--->
 ```

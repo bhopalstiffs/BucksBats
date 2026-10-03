@@ -1,6 +1,6 @@
 # Supplementary material {.unnumbered}
 
-This supplementary material provides model specifications, sampling and species summaries, model diagnostics, posterior predictive checks, and residual temporal diagnostics supporting the main-text analysis of bat activity in the northern Sierra Nevada. Intermediate model-development objects that do not contribute directly to interpretation are retained in the analysis repository rather than reproduced here.
+This supplementary material provides model specifications, sampling and species summaries, model diagnostics, posterior predictive checks, and residual temporal diagnostics supporting the main-text analysis of bat activity in the northern Sierra Nevada.
 
 ```{r}
 #| label: setup-supplement
