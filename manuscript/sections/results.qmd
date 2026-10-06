@@ -102,23 +102,6 @@ include_manuscript_figure("Figure3_seasonality.PNG")
 
 Characteristic-frequency groups contributed very different amounts of total recorded activity. High-frequency species accounted for 69,001 detection intervals, compared with 27,602 for the mid-frequency group and 7,078 for the low-frequency group. Consequently, the aggregate community response was numerically dominated by high-frequency detections, although the frequency-stratified models allow the environmental responses of the three groups to be evaluated separately.
 
-### Temperature responses among frequency groups
-
-Temperature was positively associated with bat activity across all three frequency groups over the well-sampled portion of the observed temperature gradient, although response shape differed among groups (@fig-temperature). Across the central 80% of observed nightly temperatures (6.07–17.3 $^\circ$C), predicted activity increased from 1.52 to 13.7 intervals per night for the low-frequency group, from 3.48 to 69.9 intervals per night for the mid-frequency group, and from 33.9 to 68.3 intervals per night for the high-frequency group. The corresponding median increases were 12.2 (89% CrI: 9.50–15.5), 66.4 (54.4–81.0), and 34.3 (26.7–42.4) intervals per night, respectively, with posterior probability of an increase equal to 1.00 for each group. Low- and mid-frequency activity continued to increase toward the warm end of the observed gradient, whereas high-frequency activity increased through most of the well-sampled temperature range before leveling off and declining at warmer temperatures. Across posterior draws, the median temperature associated with maximum high-frequency activity was 18.8 $^\circ$C (89% CrI: 17.3–24.2 $^\circ$C); 16.9% of posterior curves placed the maximum at the upper boundary of the observed temperature range, indicating greater uncertainty in the shape of the response at the warmest temperatures.
-
-```{r}
-#| label: fig-temperature
-#| fig-cap: "Conditional relationships between nightly mean temperature and bat acoustic activity for (a) low-frequency, (b) mid-frequency, and (c) high-frequency echolocation groups at eight sites in the northern Sierra Nevada, California. Predictions were generated across the observed temperature range and averaged over the observed distribution of sampled days of year, with each site weighted equally; relative humidity and lunar phase were held at their reference values. Lines show posterior medians and shaded ribbons show 50%, 80%, and 89% credible intervals (darkest to lightest). Y-axis scales differ among panels to emphasize differences in response shape among frequency groups."
-#| echo: false
-#| out-width: "100%"
-#| fig-align: center
-
-include_manuscript_figure("Figure4_temperature.PNG")
-```
-
-```{=html}
-
-```
 
 ### Frequency-dependent humidity responses
 
@@ -132,7 +115,21 @@ Relative humidity was associated with systematically different patterns of acous
 #| out-width: "100%"
 #| echo: false
 
-include_manuscript_figure("Figure5_humidity.PNG")
+include_manuscript_figure("Figure4_humidity.PNG")
+```
+
+### Temperature responses among frequency groups
+
+Temperature was positively associated with bat activity across all three frequency groups over the well-sampled portion of the observed temperature gradient, although response shape differed among groups (@fig-temperature). Across the central 80% of observed nightly temperatures (6.07–17.3 $^\circ$C), predicted activity increased from 1.52 to 13.7 intervals per night for the low-frequency group, from 3.48 to 69.9 intervals per night for the mid-frequency group, and from 33.9 to 68.3 intervals per night for the high-frequency group. The corresponding median increases were 12.2 (89% CrI: 9.50–15.5), 66.4 (54.4–81.0), and 34.3 (26.7–42.4) intervals per night, respectively, with posterior probability of an increase equal to 1.00 for each group. Low- and mid-frequency activity continued to increase toward the warm end of the observed gradient, whereas high-frequency activity increased through most of the well-sampled temperature range before leveling off and declining at warmer temperatures. Across posterior draws, the median temperature associated with maximum high-frequency activity was 18.8 $^\circ$C (89% CrI: 17.3–24.2 $^\circ$C); 16.9% of posterior curves placed the maximum at the upper boundary of the observed temperature range, indicating greater uncertainty in the shape of the response at the warmest temperatures.
+
+```{r}
+#| label: fig-temperature
+#| fig-cap: "Conditional relationships between nightly mean temperature and bat acoustic activity for (a) low-frequency, (b) mid-frequency, and (c) high-frequency echolocation groups at eight sites in the northern Sierra Nevada, California. Predictions were generated across the observed temperature range and averaged over the observed distribution of sampled days of year, with each site weighted equally; relative humidity and lunar phase were held at their reference values. Lines show posterior medians and shaded ribbons show 50%, 80%, and 89% credible intervals (darkest to lightest). Y-axis scales differ among panels to emphasize differences in response shape among frequency groups."
+#| echo: false
+#| out-width: "100%"
+#| fig-align: center
+
+include_manuscript_figure("Figure5_temperature.PNG")
 ```
 
 ### Lunar-phase responses among frequency groups
@@ -154,6 +151,17 @@ include_manuscript_figure("Figure6_lunar.PNG")
 
 Posterior contrasts summarized the differing environmental responses among frequency groups (@tbl-environmental-contrasts). Increasing temperature from the 10th to the 90th percentile of observed nightly conditions was associated with higher predicted activity in all three groups, although the proportional increase was substantially larger for the low- and mid-frequency groups than for the high-frequency group. In contrast, increasing relative humidity over the same portion of its observed distribution was associated with pronounced declines in mid- and high-frequency activity, whereas the low-frequency response was comparatively weak. Lunar phase was associated with smaller and less consistent differences across groups, except for the high-frequency group, for which predicted activity was higher under full- than new-moon conditions.
 
+```{=openxml}
+<w:p>
+  <w:pPr>
+    <w:sectPr>
+      <w:type w:val="nextPage"/>
+      <w:pgSz w:w="12240" w:h="15840"/>
+    </w:sectPr>
+  </w:pPr>
+</w:p>
+```
+
 ```{r}
 #| label: tbl-environmental-contrasts
 #| tbl-cap: "Posterior contrasts in expected nightly bat activity across environmental gradients for low-, mid-, and high-frequency echolocation groups. Temperature and relative-humidity contrasts compare predictions at the 10th and 90th percentiles of the observed covariate distributions; lunar contrasts compare new moon (0) with full moon (1). Differences and ratios are posterior medians with 89% credible intervals. P(Δ > 0) is the posterior probability that predicted activity at the upper endpoint exceeds predicted activity at the lower endpoint. Predictions are conditional on the remaining covariates in the full environmental model."
@@ -168,4 +176,15 @@ knitr::kable(
   table_2,
   align = c("l", "l", "l", "r", "r", "c", "c", "c")
 )
+```
+
+```{=openxml}
+<w:p>
+  <w:pPr>
+    <w:sectPr>
+      <w:type w:val="nextPage"/>
+      <w:pgSz w:w="15840" w:h="12240" w:orient="landscape"/>
+    </w:sectPr>
+  </w:pPr>
+</w:p>
 ```

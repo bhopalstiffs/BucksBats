@@ -28,9 +28,9 @@ make_table_1 <- function(agg_data, cdata_species) {
       "Bat species",
       "Sampling period",
       "Day of year",
-      "Nightly mean temperature (°C)",
       "Nightly mean relative humidity (%)",
-      "Lunar illumination"
+      "Nightly mean temperature (°C)",
+      "Lunar phase"
     ),
     
     Value = c(
@@ -53,14 +53,14 @@ make_table_1 <- function(agg_data, cdata_species) {
       
       sprintf(
         "%.1f–%.1f",
-        min(agg_data$avetemp, na.rm = TRUE),
-        max(agg_data$avetemp, na.rm = TRUE)
+        min(agg_data$averh, na.rm = TRUE),
+        max(agg_data$averh, na.rm = TRUE)
       ),
       
       sprintf(
         "%.1f–%.1f",
-        min(agg_data$averh, na.rm = TRUE),
-        max(agg_data$averh, na.rm = TRUE)
+        min(agg_data$avetemp, na.rm = TRUE),
+        max(agg_data$avetemp, na.rm = TRUE)
       ),
       
       sprintf(
@@ -298,7 +298,7 @@ make_table_2 <- function(
       .groups = "drop"
     ) |>
     mutate(
-      predictor = "Lunar illumination",
+      predictor = "Lunar phase",
       contrast = "New–full moon"
     )
   
@@ -308,17 +308,17 @@ make_table_2 <- function(
   # ---------------------------------------------------------------------------
   
   table_2 <- bind_rows(
-    temp_tab,
     rh_tab,
+    temp_tab,
     lunar_tab
   ) |>
     mutate(
       predictor = factor(
         predictor,
         levels = c(
-          "Temperature",
           "Relative humidity",
-          "Lunar illumination"
+          "Temperature",
+          "Lunar phase"
         )
       ),
       frequency_group = factor(
@@ -416,7 +416,32 @@ model_formula_text <- function(model) {
     f <- f$formula
   }
   
-  paste(deparse(f), collapse = " ")
+  txt <- paste(deparse(f), collapse = " ")
+  
+  # Standardize environmental predictor order for manuscript tables:
+  # relative humidity -> temperature -> lunar phase
+  txt <- sub(
+    "s\\(scale_avetemp\\)",
+    "TEMP_PLACEHOLDER",
+    txt
+  )
+  
+  txt <- sub(
+    "s\\(scale_averh\\)",
+    "s(scale_avetemp)",
+    txt
+  )
+  
+  txt <- sub(
+    "TEMP_PLACEHOLDER",
+    "s(scale_averh)",
+    txt
+  )
+  
+  # Collapse extra whitespace introduced by deparse()
+  txt <- gsub("\\s+", " ", txt)
+  
+  txt
 }
 
 model_family_text <- function(model) {
@@ -646,7 +671,7 @@ make_table_s4 <- function(cdata_species) {
     "MYOCIL", "Myotis ciliolabrum",       "Western small-footed myotis", "high", 45,
     "MYOVOL", "Myotis volans",            "Long-legged myotis",          "high", 40,
     "PARHES", "Parastrellus hesperus",    "Canyon bat",                  "high", 45,
-    "LASBLO", "Lasiurus blossevillii",    "Western red bat",             "high", 42,
+    "LASFRA", "Lasiurus frantzii",        "Western red bat",             "high", 42,
     "MYOEVO", "Myotis evotis",            "Long-eared myotis",           "mid",  35,
     "MYOTHY", "Myotis thysanodes",        "Fringed myotis",              "mid",  32,
     "EPTFUS", "Eptesicus fuscus",         "Big brown bat",               "mid",  27,

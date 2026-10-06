@@ -48,7 +48,7 @@ dir.create(fig_dir, recursive = TRUE, showWarnings = FALSE)
 dir.create(supp_fig_dir, recursive = TRUE, showWarnings = FALSE)
 dir.create(posterior_dir, recursive = TRUE, showWarnings = FALSE)
 
-rebuild_posterior_predictions <- FALSE
+rebuild_posterior_predictions <- TRUE
 
 require_file <- function(path) {
   if (!file.exists(path)) {
@@ -283,20 +283,20 @@ fig_season <- make_figure3(
   filename         = "Figure3_seasonality.PNG"
 )
 
-fig_temp <- make_temperature_figure(
-  post_low  = post_temp_low,
-  post_mid  = post_temp_mid,
-  post_high = post_temp_high,
-  fig_dir   = fig_dir,
-  filename  = "Figure4_temperature.PNG"
-)
-
 fig_rh <- make_rh_figure(
   post_low  = post_rh_low,
   post_mid  = post_rh_mid,
   post_high = post_rh_high,
   fig_dir   = fig_dir,
-  filename  = "Figure5_humidity.PNG"
+  filename  = "Figure4_humidity.PNG"
+)
+
+fig_temp <- make_temperature_figure(
+  post_low  = post_temp_low,
+  post_mid  = post_temp_mid,
+  post_high = post_temp_high,
+  fig_dir   = fig_dir,
+  filename  = "Figure5_temperature.PNG"
 )
 
 fig_lunar <- make_lunar_figure(

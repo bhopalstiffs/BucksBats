@@ -56,6 +56,17 @@ include_supp_figure <- function(filename) {
 
 # Supplementary tables
 
+```{=openxml}
+<w:p>
+  <w:pPr>
+    <w:sectPr>
+      <w:type w:val="nextPage"/>
+      <w:pgSz w:w="12240" w:h="15840"/>
+    </w:sectPr>
+  </w:pPr>
+</w:p>
+```
+
 ## Table S1. Final model specifications
 
 ```{r}
@@ -72,6 +83,8 @@ knitr::kable(
   align = c("l", "l", "l", "l", "r")
 )
 ```
+
+{{< pagebreak >}}
 
 ## Table S2. Aggregate-model sampling diagnostics
 
@@ -107,6 +120,7 @@ knitr::kable(
 )
 ```
 
+
 ## Table S4. Species composition and characteristic echolocation-frequency groups
 
 ```{r}
@@ -118,11 +132,24 @@ knitr::kable(
 
 table_s4 <- supp_table("table_s4")
 
-knitr::kable(
-  table_s4,
-  align = c("l", "l", "l", "r", "l", "r", "r")
-)
+table_s4 |>
+  flextable::flextable() |>
+  flextable::set_table_properties(layout = "fixed") |>
+  flextable::width(
+    j = 1:7,
+    width = c(
+      1.00,  # Species code
+      1.90,  # Scientific name
+      2.00,  # Common name
+      1.15,  # Characteristic frequency
+      0.90,  # Frequency group
+      0.80,  # Total intervals
+      0.85   # Site-nights detected
+    )
+  )
 ```
+
+{{< pagebreak >}}
 
 ## Table S5. Retained sampling effort by site
 
@@ -135,10 +162,25 @@ knitr::kable(
 
 table_s5 <- supp_table("table_s5")
 
-knitr::kable(
-  table_s5,
-  digits = c(NA, 0, 0, 0, 1, 1, NA, NA)
-)
+table_s5 |>
+  flextable::flextable() |>
+  flextable::set_table_properties(layout = "fixed") |>
+  flextable::width(
+    j = 1:8,
+    width = c(0.65, 0.90, 0.85, 1.00, 1.00, 1.00, 1.00, 1.00)
+  )
+```
+
+
+```{=openxml}
+<w:p>
+  <w:pPr>
+    <w:sectPr>
+      <w:type w:val="nextPage"/>
+      <w:pgSz w:w="15840" w:h="12240" w:orient="landscape"/>
+    </w:sectPr>
+  </w:pPr>
+</w:p>
 ```
 
 ## Table S6. Software and computational environment

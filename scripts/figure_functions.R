@@ -21,8 +21,8 @@
 # -----------------------------------------------------------------------------
 
 activity_ylab <- paste0(
-  "Expected number of 5-min intervals per night\n",
-  "with bat activity"
+  "Expected number of 5-min intervals\n",
+  "per night with bat activity"
 )
 
 bat_theme <- function() {
@@ -200,7 +200,7 @@ plot_season_posterior <- function(post,
     bat_theme() +
     theme(
       legend.position = "none",
-      plot.title = element_text(face = "bold")
+      plot.title = element_text(face = "bold", size = 20)
     )
   
   if (!is.null(y_limits)) {
@@ -290,7 +290,7 @@ plot_site_season_posterior <- function(post_sites,
     
     theme(
       legend.position = "none",
-      plot.title = element_text(face = "bold"),
+      plot.title = element_text(face = "bold", size = 20),
       
       # Give the y title a little breathing room
       axis.title.y = element_text(
@@ -352,7 +352,7 @@ make_figure3 <- function(post_total,
     patchwork::plot_annotation(
       tag_levels = "a",
       theme = theme(
-        plot.tag = element_text(size = 12)
+        plot.tag = element_text(size = 15)
       )
     )
   
@@ -428,7 +428,8 @@ make_env_posterior_plot <- function(
     ) +
     bat_theme() +
     theme(
-      legend.position = "none"
+      legend.position = "none",
+      plot.title = element_text(face = "bold", size = 20),
     )
   
   if (!is.null(y_limits)) {
